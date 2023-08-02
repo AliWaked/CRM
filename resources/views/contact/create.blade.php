@@ -5,43 +5,43 @@
         @csrf
         <div class="group">
             <label for="">First Name</label>
-            <input type="text" name="first_name">
+            <input value="{{old('first_name')}}" type="text" name="first_name">
             <br>
             <small>{{ $errors->first('name') }}</small>
         </div>
         <div class="group">
             <label for="">Surname</label>
-            <input type="text" name="surname">
+            <input value="{{old('surname')}}" type="text" name="surname">
             <br>
             <small>{{ $errors->first('surname') }}</small>
         </div>
         <div class="group">
             <label for="">Eamil</label>
-            <input type="email" name="email">
+            <input value="{{old('email')}}" type="email" name="email">
             <br>
             <small>{{ $errors->first('email') }}</small>
         </div>
         <div class="group">
             <label for="">Bitrthday</label>
-            <input type="date" name="birthday">
+            <input value="{{old('birthday')}}" type="date" name="birthday">
             <br>
             <small>{{ $errors->first('birthday') }}</small>
         </div>
         <div class="group">
             <label for="">Company</label>
-            <input type="text" name="company">
+            <input value="{{old('company')}}" type="text" name="company">
             <br>
             <small>{{ $errors->first('company') }}</small>
         </div>
         <div class="group">
             <label for="">Job title</label>
-            <input type="text" name="job_title">
+            <input value="{{old('job_title')}}" type="text" name="job_title">
             <br>
             <small>{{ $errors->first('job_title') }}</small>
         </div>
         <div class="group">
             <label for="">Phone Number</label>
-            <input type="number" name="phone_number">
+            <input value="{{old('phone_number')}}" type="number" name="phone_number">
             <br>
             <small>{{ $errors->first('phone_number') }}</small>
         </div>

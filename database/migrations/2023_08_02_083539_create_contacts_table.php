@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('company');
             $table->string('job_title');
             $table->date('birthday');
-            $table->json('email');
+            $table->string('email');
             $table->json('phone_number');
             // $table->json('options');
             $table->string('avatar')->nullable();

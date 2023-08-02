@@ -128,6 +128,9 @@
 
         small {
             color: red;
+            position: relative;
+            left: 180px;
+            /* margin-left: 170px; */
         }
     </style>
 </head>
@@ -152,14 +155,7 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    @if (Auth::guard()->name == 'instructor')
-                        <a href="/instructor/dashboard"
-                            class="nav-link text-uppercase font-weight-semi-bold">Instructor</a>
-                    @elseif (Auth::guard()->name == 'admin')
-                        <a href="/admin/dashboard" class="nav-link text-uppercase font-weight-semi-bold">Admin</a>
-                    @else
-                        <a href="/dashboard" class="nav-link text-uppercase font-weight-semi-bold">Admin</a>
-                    @endif
+
                 </li>
 
             </ul>
@@ -187,7 +183,7 @@
             <a href="/" class="brand-link">
                 {{-- <i class="fas fa-book-reader ml-3" style="color: #2878EB ; font-size:30px;"></i> --}}
                 <span class="brand-text font-weight-bold ml-2"
-                    style="font-size:25px;color:#2878EB; text-align:center;">Contact</span>
+                    style="font-size:25px;color:#2878EB; display:block; text-align:center; margin-right:30px;">Contact</span>
             </a>
 
             <!-- Sidebar -->
@@ -338,8 +334,8 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('assets/dist/js/pages/dashboard.js') }}"></script>
     <script src="
-                                                    https://cdn.jsdelivr.net/npm/sweetalert2@11.7.16/dist/sweetalert2.all.min.js
-                                                    "></script>
+                                                        https://cdn.jsdelivr.net/npm/sweetalert2@11.7.16/dist/sweetalert2.all.min.js
+                                                        "></script>
 
     <script>
         if ("{{ Session::has('success') }}") {

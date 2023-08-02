@@ -10,12 +10,11 @@ class Contact extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'first_name', 'surname', 'company', 'job_title', 'phone_number', 'birthday', 'email', 'address', 'options', 'avatar',
+        'user_id', 'first_name', 'surname', 'company', 'job_title', 'phone_number', 'birthday', 'email', 'avatar',
     ];
 
     protected $casts = [
         'email' => 'json',
-        'phone_number' => 'json',
     ];
     public function users(): HasMany
     {

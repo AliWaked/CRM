@@ -53,31 +53,31 @@
     <form class="form">
         <div class="group">
             <label for="">First Name</label>
-            <input type="text" disabled value="{{$contact->first_name}}" name="first_name">
+            <input type="text" disabled value="{{old('first_name',$contact->first_name)}}" name="first_name">
         </div>
         <div class="group">
             <label for="">Surname</label>
-            <input disabled type="text" value="{{$contact->surname}}" name="surname">
+            <input disabled type="text" value="{{old('surname',$contact->surname)}}" name="surname">
         </div>
         <div class="group">
             <label for="">Eamil</label>
-            <input disabled type="email" value="{{$contact->email}}" name="email">
+            <input disabled type="email" value="{{old('email',$contact->email)}}" name="email">
         </div>
         <div class="group">
             <label for="">Bitrthday</label>
-            <input disabled type="date" value="{{$contact->birthday}}" name="birthday">
+            <input disabled type="date" value="{{old('birthday',$contact->birthday)}}" name="birthday">
         </div>
         <div class="group">
             <label for="">Company</label>
-            <input disabled type="text" value="{{$contact->company}}" name="company">
+            <input disabled type="text" value="{{old('company',$contact->company)}}" name="company">
         </div>
         <div class="group">
             <label for="">Job title</label>
-            <input disabled type="text" value="{{$contact->job_title}}" name="job_title">
+            <input disabled type="text" value="{{old('job_title',$contact->job_title)}}" name="job_title">
         </div>
         <div class="group">
             <label for="">Phone Number</label>
-            <input disabled type="number" value="{{$contact->phone_number}}" name="phone_number">
+            <input disabled type="number" value="{{old('phone_number',$contact->phone_number)}}" name="phone_number">
         </div>
     </form>
 </x-layout>
