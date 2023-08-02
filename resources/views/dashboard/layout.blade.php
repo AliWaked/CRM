@@ -85,7 +85,8 @@
             font-weight: normal;
         }
 
-        form.form input {
+        form.form input,
+        form.form select {
             border: noen;
             border: none;
             background: #80808030;
@@ -98,8 +99,9 @@
             border: 2px solid transparent;
         }
 
-        form.form input:focus {
-            border: 2px solid #2878EB;
+        form.form input:focus,
+        form.form select:focus {
+            border-color: inherit;
         }
 
         form.form div.button {
@@ -132,6 +134,174 @@
             left: 180px;
             /* margin-left: 170px; */
         }
+    </style>
+    <style>
+        div.icon {
+            width: 150px;
+            height: 150px;
+            margin-left: auto;
+            margin-right: auto;
+            background: #80808012;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-bottom: 45px;
+            cursor: pointer;
+        }
+
+        div.icon.hidden {
+            display: none;
+        }
+
+        div.icon i {
+            color: #2878eb45;
+            font-size: 20px;
+            margin: 0;
+            font-size: 70px;
+        }
+
+        form.form .avatar-image.hidden {
+            display: none;
+        }
+
+        form.form img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            /* margin-bottom: 45px; */
+            cursor: pointer;
+        }
+
+        section.change-avatar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        section.change-avatar.hidden {
+            width: 0;
+            overflow: hidden;
+        }
+
+        section.change-avatar .overlay {
+            background: #33333347;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        section.change-avatar img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            border-radius: 5px
+        }
+
+        form.form img+label i {
+            position: relative;
+            top: -55px;
+            left: 276px;
+            font-size: 22px;
+            color: #fff;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #2729b031;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        form.form img+label i:hover {
+            color: rgba(0, 0, 255, 0.582);
+        }
+
+        form.form input+i {
+            color: #008000a3;
+            margin-left: 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: 0.2s;
+            visibility: hidden;
+        }
+
+        form.form input:focus+i {
+            visibility: visible;
+        }
+
+        form.form input+i:hover {
+            color: #008000de;
+        }
+
+        form.form input+i.clos {
+            color: #800000a3;
+            margin-left: 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        form.form input+i.clos:hover {
+            color: #800000da;
+        }
+
+        section.change-avatar i {
+            position: relative;
+            top: 75%;
+            font-size: 20px;
+            color: red;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            left: 62%;
+            z-index: 5;
+            /* display: none; */
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        section.change-avatar i:hover {
+            background: #ff000030;
+        }
+        i#remove-avatar {
+            position: absolute;
+            top: 96px;
+                    left: 150px;
+                    color: #fff;
+                    cursor: pointer;
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: #2729b031;
+                    border-radius: 50%;
+                    transition: 0.2s;
+                }
+                i#remove-avatar:hover {
+                    color: rgba(255, 0, 0, 0.596);
+                    background-color: rgba(255, 0, 0, 0.144);
+                }
+
+        /* section.change-avatar img:hover + i {
+            display: block;
+        } */
     </style>
 </head>
 
@@ -196,7 +366,7 @@
                                 style="margin-right:7px;margin-top:3px;height: 35px; width:35px; border-radius:50%;"
                                 alt="User Image">
                         @else
-                            <i class="fas fa-user ml-2 mt-2 mr-2" style="color: #2878EB;font-size:20px;"></i>
+                            <i class="fas fa-user ml-1 mt-2 mr-2" style="color: #2878EB;font-size:20px;"></i>
                         @endif
                     </div>
                     <div class="info">
@@ -225,6 +395,8 @@
                                     class="fa-solid fa-users"></i></span>Contacts</a>
                         <a href="{{ route('contact.create', Auth::id()) }}" class="style"><span><i
                                     class="fa-solid fa-user-plus"></i></span>Create Contact</a>
+                        <a href="{{ route('contact.trash', Auth::id()) }}" class="style"><span><i
+                                    class="fa-solid fa-user-xmark"></i></span>Trashed</a>
                         {{-- <a href="" class="style "><span><i class=""></i></span></a> --}}
                         {{-- <a href="" class="style "><span><i class=""></i></span>Add Contact</a> --}}
                         {{-- <a href="" class="style "><span><i class=""></i></span>Add Contact</a> --}}
@@ -259,6 +431,7 @@
             <!-- /.content-header -->
 
             <!-- Main content -->
+
             <section class="content">
                 <div class="container-fluid">
                     {{ $slot }}
@@ -281,6 +454,56 @@
         </aside>
         <!-- /.control-sidebar -->
     </div>
+    <script>
+        // function changeImage() {
+        document.getElementById('avatar').onchange = function() {
+            console.log('hi');
+            value = this.files[0];
+            document.getElementById('image_avatar').classList.remove('hidden');
+            document.getElementById('avatar_image_default').classList.add('hidden');
+            document.getElementById('avatar_image').src = URL.createObjectURL(value);
+            document.getElementById('avatar_image_big').src = URL.createObjectURL(value);
+        }
+        function removeImage() {
+            document.getElementById('image_avatar').classList.add('hidden');
+            document.getElementById('avatar_image_default').classList.remove('hidden');
+        }
+
+        function addNewEmail() {
+            document.getElementById("add-new-email").innerHTML +=
+                `
+            <div class="group">
+            <label for="" style='color:#ff777780'>Other Email</label>
+            <input type="email" style='color:#ff777780;' name="email[]">
+            <i class="fa-regular fa-circle-xmark clos"></i>
+        </div>
+        `;
+            removeElement();
+        }
+
+        function addNewPhoneNumber() {
+            document.getElementById("add-new-phone-number").innerHTML +=
+                `
+            <div class="group">
+            <label for="" style='color:#ff777780'>Other Phone</label>
+            <input type="number" style='color:#ff777780;' name="phone_number[]">
+            <i class="fa-regular fa-circle-xmark clos"></i>
+        </div>
+        `;
+            removeElement();
+        }
+
+        function removeElement() {
+            icons = document.getElementsByClassName('fa-circle-xmark');
+            for (let i = 0; i < icons.length; i++) {
+                icons[i].onclick = function() {
+                    this.parentNode.remove();
+                }
+            }
+        }
+
+        // }
+    </script>
     <script>
         links = document.getElementById('ul-links').children;
         for (let i = 0; i < links.length; i++) {
@@ -334,8 +557,8 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('assets/dist/js/pages/dashboard.js') }}"></script>
     <script src="
-                                                        https://cdn.jsdelivr.net/npm/sweetalert2@11.7.16/dist/sweetalert2.all.min.js
-                                                        "></script>
+                                                                                https://cdn.jsdelivr.net/npm/sweetalert2@11.7.16/dist/sweetalert2.all.min.js
+                                                                                "></script>
 
     <script>
         if ("{{ Session::has('success') }}") {

@@ -11,7 +11,7 @@
 
         table tr th {
             color: #fff;
-            width: calc(100%/7);
+            width: calc(100%/6);
             font-size: 18px;
             background: blue;
             padding: 20px 20px;
@@ -114,13 +114,16 @@
                         </td>
                         <td style="">
                             <div style="display: flex; justify-content:flex-end; align-items:center">
-                                <form action="{{ route('contact.show', $contact->id) }}">
+                                {{-- <form action="{{ route('contact.show', $contact->id) }}">
                                     <i class="fa-solid fa-eye show" style='' onclick="this.parentNode.submit()"></i>
+                                </form> --}}
+                                <form action="{{ route('contact.restore', $contact->id) }}" method="post">
+                                @csrf
+                                @method('put')
+                                    {{-- <i class="fa-solid fa-arrow-rotate-left"></i> --}}
+                                    <i class="fa-solid fa-arrow-rotate-left edit" onclick="this.parentNode.submit()"></i>
                                 </form>
-                                <form action="{{ route('contact.edit', $contact->id) }}" method="get">
-                                    <i class="fa-solid fa-pen-to-square edit" onclick="this.parentNode.submit()"></i>
-                                </form>
-                                <form action="{{ route('contact.destroy', $contact->id) }}" method="post">
+                                <form action="{{ route('contact.forceDelete', $contact->id) }}" method="post">
                                     @csrf
                                     @method('delete')
                                     <i class="fa-solid fa-trash delete" onclick="this.parentNode.submit()"></i>
@@ -133,7 +136,7 @@
         </table>
     @else
         <div class="no-contact">
-            not Have any Contact
+            not Have any trashed Contact
         </div>
     @endif
     {{-- <x-slot:links>

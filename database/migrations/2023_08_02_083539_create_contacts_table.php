@@ -16,14 +16,16 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('first_name');
             $table->string('surname');
-            $table->string('company');
-            $table->string('job_title');
-            $table->date('birthday');
-            $table->string('email');
+            $table->string('company')->nullable();
+            $table->string('job_title')->nullable();
+            $table->date('birthday')->nullable();
+            $table->enum('gender', ['male', 'female']);
+            $table->json('email');
             $table->json('phone_number');
             // $table->json('options');
             $table->string('avatar')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

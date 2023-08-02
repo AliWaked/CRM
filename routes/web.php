@@ -29,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('contact', ContactController::class)->middleware('auth')->names('contact')->shallow();
+Route::get('contact/trash', [ContactController::class, 'trashed'])->middleware('auth')->name('contact.trash');
+Route::put('contact/trash/{id}/restore', [ContactController::class, 'restore'])->middleware('auth')->name('contact.restore');
+Route::delete('contact/trash/{id}/force-delete', [ContactController::class, 'forceDeleting'])->middleware('auth')->name('contact.forceDelete');
+Route::resource('contact', ContactController::class)->middleware('auth')->names('contact');
 
 require __DIR__ . '/auth.php';

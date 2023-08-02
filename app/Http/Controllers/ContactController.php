@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ContactController extends Controller
@@ -16,7 +19,7 @@ class ContactController extends Controller
     public function index(): View
     {
         return view('contact.index', [
-            'user' => Auth::user()
+            'contacts' => Contact::paginate(),
         ]);
     }
 
@@ -33,26 +36,23 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContactRequest $request): RedirectResponse
     {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'birthday' => 'required|date|max:255',
-            'company' => 'required|string|max:255',
-            'job_title' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:100',
-        ]);
+        $data = $request->validated();
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $path = $file->storeAs('/uploads', time() . '*' . $file->getClientOriginalName(), ['disk' => 'public']);
+            $data['avatar'] = $path;
+        }
         // dd($request->all());
-        Contact::create([...$request->all(),'user_id' => Auth::id()]);
+        Contact::create($data);
         return to_route('contact.index', ['user' => Auth::user()])->with('success', 'add new Contact');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Contact $contact)
+    public function show(Contact $contact): View
     {
         return view('contact.show', [
             'contact' => $contact,
@@ -62,7 +62,7 @@ class ContactController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Contact $contact)
+    public function edit(Contact $contact): View
     {
         return view('contact.edit', [
             'contact' => $contact,
@@ -72,27 +72,47 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Contact $contact)
+    public function update(ContactRequest $request, Contact $contact): RedirectResponse
     {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'birthday' => 'required|date|max:255',
-            'company' => 'required|string|max:255',
-            'job_title' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:100',
-        ]);
-        $contact->update($request->all());
+        $path = $contact->avatar;
+        $data = $request->validated();
+        if ($request->hasFile('avatar') && $contact->avatar) {
+            $data['avatar'] = $this->storeAvatarImage($request->file('avatar'));
+        }
+        $contact->update($data);
+        if (isset($data['avatar'])) {
+            Storage::disk(Contact::DISK)->delete($path);
+        }
         return to_route('contact.index')->with('success', 'updated success');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Contact $contact)
+    public function destroy(Contact $contact): RedirectResponse
     {
         $contact->delete();
-        return to_route('contact.index')->with('delete','sucess');
+        return to_route('contact.index')->with('delete', 'sucess');
+    }
+
+    public function trashed(): View
+    {
+        return view('contact.trash', [
+            'contacts' => Contact::onlyTrashed()->paginate(),
+        ]);
+    }
+    public function restore(string $id): RedirectResponse
+    {
+        Contact::onlyTrashed()->findOrFail($id)->restore();
+        return to_route('contact.index')->with('success', 'restore contact success');
+    }
+    public function forceDeleting(string $id): RedirectResponse
+    {
+        Contact::onlyTrashed()->findOrFail($id)->forceDelete();
+        return to_route('contact.index')->with('delete', 'force deleting');
+    }
+    public function storeAvatarImage(object $file): string
+    {
+        return $file->storeAs('/uploads', time() . '*' . $file->getClientOriginalName(), ['disk' => Contact::DISK]);
     }
 }
